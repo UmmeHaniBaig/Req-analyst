@@ -753,12 +753,10 @@ async function callClaude(system, messages, maxTokens) {
 
   // Agentic loop: handle tool_use (web_search) responses AND max_tokens auto-continue
   for (var attempt = 0; attempt < 6; attempt++) {
-    var res = await fetch('https://api.anthropic.com/v1/messages', {
+    var res = await fetch('/.netlify/functions/claude-proxy', {
       method: 'POST',
       headers: {
-        'content-type': 'application/json',
-        'anthropic-version': '2023-06-01',
-        'anthropic-dangerous-direct-browser-access': 'true'
+        'content-type': 'application/json'
       },
       body: JSON.stringify({
         model: 'claude-sonnet-4-6',
@@ -816,12 +814,10 @@ async function callClaude(system, messages, maxTokens) {
 // ── URL FETCHER — uses Claude's server-side web_fetch tool (bypasses CORS entirely) ──
 async function fetchUrlContent(url) {
   try {
-    var res = await fetch('https://api.anthropic.com/v1/messages', {
+    var res = await fetch('/.netlify/functions/claude-proxy', {
       method: 'POST',
       headers: {
-        'content-type': 'application/json',
-        'anthropic-version': '2023-06-01',
-        'anthropic-dangerous-direct-browser-access': 'true'
+        'content-type': 'application/json'
       },
       body: JSON.stringify({
         model: 'claude-sonnet-4-6',
@@ -3635,9 +3631,9 @@ async function searchMicrosoftDocs(problemKey, problemDesc, userText) {
   var query = QUERY_MAP[problemKey] || ('site:learn.microsoft.com ' + problemDesc.slice(0, 80));
 
   try {
-    var res = await fetch('https://api.anthropic.com/v1/messages', {
+    var res = await fetch('/.netlify/functions/claude-proxy', {
       method: 'POST',
-      headers: { 'content-type': 'application/json', 'anthropic-version': '2023-06-01', 'anthropic-dangerous-direct-browser-access': 'true' },
+      headers: { 'content-type': 'application/json' },
       body: JSON.stringify({
         model: 'claude-sonnet-4-6',
         max_tokens: 400,
